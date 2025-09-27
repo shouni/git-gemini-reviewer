@@ -39,5 +39,6 @@ dependencies = [
 
 ## ターミナルで実行するコマンドの設定
 [project.scripts]
-git-gemini-reviewer = "git_gemini_reviewer.cli:main"
-git-gemini-reviewer-generic = "git_gemini_reviewer.cli:main_generic"
+git-gemini-reviewer = "git_gemini_reviewer.cli:main_generic"
+git-gemini-reviewer-backlog = "git_gemini_reviewer.cli:main"
+
