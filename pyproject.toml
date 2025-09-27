@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# --- パッケージ検出の設定 ---
+[tool.setuptools.packages.find]
+# この一行が非常に重要です。パッケージを 'src' ディレクトリ内で探すように指示します。
+where = ["src"]
+
+# プロジェクトの基本情報
+[project]
+name = "git-gemini-reviewer"
+version = "0.1.0"
+authors = [
+    { name="shouni" },
+]
+description = "A command-line tool for automated code review using Gemini API."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file="LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# プロジェクトが依存するライブラリのリスト
+dependencies = [
+#    "python-fire",
+    "google-generativeai",
+    "python-dotenv",
+    "requests",
+]
+
+# プロジェクトに関連するURL
+[project.urls]
+"Homepage" = "https://github.com/shouni/git-gemini-reviewer"
+"Bug Tracker" = "https://github.com/shouni/git-gemini-reviewer/issues"
+
+# ターミナルで実行するコマンドの設定
+[project.scripts]
+git-gemini-reviewer = "git_gemini_reviewer.cli:main"
+git-gemini-reviewer = "git_gemini_reviewer.cli:main_generic"
