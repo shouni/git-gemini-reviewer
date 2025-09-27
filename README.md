@@ -1,10 +1,24 @@
-ご提供いただいた情報に基づき、`README.md` の**概要**、**セットアップ手順**、**使い方**を分かりやすくまとめて再出力します。
+# 🤖 git-gemini-reviewer
+
+[![Python Version](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+### 🚀 概要 (About)
+
+**`git-gemini-reviewer`** は、Gitリポジトリのブランチ間の差分を **Google Gemini API** を使用して自動でコードレビューするためのコマンドラインツールです。レビュー結果をターミナルに出力するだけでなく、**Backlog** などの課題管理システムへ自動でコメント投稿する機能も提供します。
 
 -----
 
-# 🤖 git-gemini-reviewer
+## 🛠️ 技術スタック (Tech Stack)
 
-**`git-gemini-reviewer`** は、Gitリポジトリのブランチ間の差分を **Google Gemini API** を使用して自動でコードレビューするためのコマンドラインツールです。レビュー結果をターミナルに出力するだけでなく、**Backlog** などの課題管理システムへ自動でコメント投稿する機能も提供します。
+| カテゴリ | 要素 | 詳細 |
+| :--- | :--- | :--- |
+| **言語** | **Python** (3.9+) | プロジェクトの核となるプログラミング言語。 |
+| **AI/API** | **Google Gemini API** | コードレビューのロジックを担うAIモデル。 |
+| **パッケージ管理** | `pip`, `setuptools` | 依存関係の管理とパッケージングに使用。 |
+| **依存ライブラリ** | `google-generativeai`, `python-dotenv`, `requests` | Gemini API連携、環境変数管理、HTTPリクエストに使用。 |
+| **バージョン管理** | **Git** | レビュー対象のソースコード管理。 |
+| **連携サービス** | **Backlog** | レビュー結果をコメントとして投稿する課題管理システム。 |
 
 -----
 
