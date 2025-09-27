@@ -37,7 +37,7 @@ dependencies = [
 "Homepage" = "https://github.com/shouni/git-gemini-reviewer"
 "Bug Tracker" = "https://github.com/shouni/git-gemini-reviewer/issues"
 
-# ターミナルで実行するコマンドの設定
+## ターミナルで実行するコマンドの設定
 [project.scripts]
 git-gemini-reviewer = "git_gemini_reviewer.cli:main"
-git-gemini-reviewer = "git_gemini_reviewer.cli:main_generic"
+git-gemini-reviewer-generic = "git_gemini_reviewer.cli:main_generic"
