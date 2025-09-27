@@ -1,5 +1,14 @@
+ご提供いただいた情報に基づき、`README.md` の**概要**、**セットアップ手順**、**使い方**を分かりやすくまとめて再出力します。
 
-### 🚀 開発環境のセットアップ
+-----
+
+# 🤖 git-gemini-reviewer
+
+**`git-gemini-reviewer`** は、Gitリポジトリのブランチ間の差分を **Google Gemini API** を使用して自動でコードレビューするためのコマンドラインツールです。レビュー結果をターミナルに出力するだけでなく、**Backlog** などの課題管理システムへ自動でコメント投稿する機能も提供します。
+
+-----
+
+## 🛠️ 開発環境のセットアップ
 
 本プロジェクトを開発・実行するには、以下の手順で仮想環境を構築し、編集可能モードでインストールしてください。
 
@@ -24,49 +33,11 @@
     pip install --upgrade --force-reinstall -e .
     ```
 
-プロジェクトのコード（エントリーポイント部分）を拝見しました。
-
-この情報を基に、プロジェクトの利用方法を明確にした `README.md` の「使用方法」セクションを更新します。ユーザーが**Backlog連携あり**と**連携なし**の2つのコマンドを理解し、必要な引数を迷わず入力できるように整理しました。
-
 -----
 
 ## 🚀 使い方 (Usage)
 
-本ツールは、Backlog連携の有無に応じて**2つのコマンド**を提供します。どちらのコマンドも、Gitリポジトリの差分を Gemini でレビューし、結果を出力します。
-
-| コマンド名 | 目的 | Backlog連携 |
-| :--- | :--- | :--- |
-| **`git-gemini-reviewer`** | レビュー結果を**Backlogの課題にコメントとして投稿**します。 | **あり** (`--issue-id` 必須) |
-| **`git-gemini-reviewer-generic`** | レビュー結果を**標準出力**（ターミナル）に表示します。 | **なし** |
-
-### 1\. 必須引数（共通）
-
-以下の3つの引数は、どちらのコマンドを使用する場合でも**必ず必要**です。
-
-| 引数名 | 必須 | 説明 |
-| :--- | :--- | :--- |
-| `--git-clone-url` | **必須** | レビュー対象の **GitリポジトリURL**。 (例: `git@github.com:user/repo.git` または `https://...`) |
-| `--base-branch` | **必須** | 差分比較の**基準となるブランチ**。通常は `main` や `develop`。 |
-| `--feature-branch` | **必須** | **レビュー対象**のフィーチャーブランチ。 |
-
-### 2\. オプション引数（共通）
-
-| 引数名 | デフォルト値 | 説明 |
-| :--- | :--- | :--- |
-| `--local-path` | `./var/tmp` | リポジトリを一時的にクローンするローカルパス。 |
-| `--gemini-model-name` | `gemini-2.5-flash` | 使用する Gemini モデル名。 |
-
------
-
-了解しました！`pyproject.toml` の **`[project.scripts]`** を新しい設定に合わせて更新します。
-
-新しい設定では、Backlog連携**なし**がメインのコマンドとなり、Backlog連携**あり**が別名に分離されました。これにより、ユーザーにとって利用目的がより明確になります。
-
------
-
-## 🚀 使い方 (Usage)
-
-本ツールは、Geminiによるコードレビューを実行するための **2つのコマンド** を提供します。
+本ツールは、Backlog連携の有無に応じて**2つのコマンド**を提供します。どちらのコマンドも、Gitリポジトリの差分を Gemini でレビューします。
 
 | コマンド名 | 目的 | Backlog連携 | エントリーポイント |
 | :--- | :--- | :--- | :--- |
@@ -79,7 +50,7 @@
 
 | 引数名 | 必須 | 説明 |
 | :--- | :--- | :--- |
-| `--git-clone-url` | **必須** | レビュー対象の **GitリポジトリURL**。 |
+| `--git-clone-url` | **必須** | レビュー対象の **GitリポジトリURL**。 (例: `git@github.com:...` または `https://...`) |
 | `--base-branch` | **必須** | 差分比較の**基準となるブランチ**。通常は `main` や `develop`。 |
 | `--feature-branch` | **必須** | **レビュー対象**のフィーチャーブランチ。 |
 
@@ -92,16 +63,14 @@
 
 -----
 
-## 💻 コマンド実行例と詳細オプション
+## 💻 コマンド実行例
 
 ### A. Backlog連携なし (標準出力)
 
-**コマンド名**: `git-gemini-reviewer`
-
-レビュー結果をターミナルで確認する、基本的な実行方法です。
+Backlogへ投稿せず、レビュー結果をターミナルで確認したい場合に利用します。
 
 ```bash
-# --git-clone-url, --base-branch, --feature-branch は必須
+# コマンド名: git-gemini-reviewer
 git-gemini-reviewer \
   --git-clone-url "git@github.com:shouni/git-gemini-reviewer.git" \
   --base-branch "main" \
@@ -112,24 +81,22 @@ git-gemini-reviewer \
 
 ### B. Backlog連携あり (課題にコメント投稿)
 
-**コマンド名**: `git-gemini-reviewer-backlog`
+レビュー結果を Backlog の課題にコメントとして投稿します。このモードでは `--issue-id` の指定が必須となります。
 
-レビュー結果を Backlog の課題にコメント投稿するには、**`--issue-id`** の指定が**必須**です。
-
-#### 🔹 基本投稿 (必須引数)
+#### 🔹 基本投稿
 
 ```bash
-# --issue-id が必須
+# コマンド名: git-gemini-reviewer-backlog
 git-gemini-reviewer-backlog \
-  --git-clone-url "..." \
+  --git-clone-url "git@github.com:shouni/git-gemini-reviewer.git" \
   --base-branch "main" \
   --feature-branch "develop" \
-  --issue-id "BLG-123" 
+  --issue-id "BLG-123"  # Backlog連携時には必須
 ```
 
-#### 🔹 投稿をスキップして標準出力する
+#### 🔹 投稿をスキップして結果を確認
 
-Backlog連携モードで起動しつつ、投稿だけをスキップして結果をターミナルで確認したい場合は `--no-post` フラグを使用します。
+Backlog連携モードのロジックを使いつつ、一時的に投稿をスキップして結果を標準出力したい場合に利用します。
 
 ```bash
 git-gemini-reviewer-backlog \
@@ -137,5 +104,5 @@ git-gemini-reviewer-backlog \
   --base-branch "main" \
   --feature-branch "develop" \
   --issue-id "BLG-123" \
-  --no-post
+  --no-post  # コメント投稿をスキップし、結果をターミナルに出力
 ```
