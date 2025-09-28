@@ -84,7 +84,7 @@ class GeminiReviewer:
                 print(f"--- ⚠️ 注意: フィルタリングによりレビュー対象の差分がなくなりました。許可された拡張子: {self.allowed_extensions} ---")
             return ""
 
-            # 2. プロンプト生成ロジックを利用してプロンプトを組み立てる
+        # 2. プロンプト生成ロジックを利用してプロンプトを組み立てる
         prompt = self._build_review_prompt(code_diff=filtered_diff, issue_key=issue_key)
 
         try:
