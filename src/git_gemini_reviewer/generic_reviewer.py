@@ -110,8 +110,14 @@ class GitCodeReviewer:
 
     def _setup_git_client(self):
         """リポジトリの準備とGitClientの初期化を結合します。"""
-        local_repo_path = self._prepare_local_repository()
-        self.git_client = GitClient(repo_path=str(local_repo_path))
+        git_clone_url = self.args.git_clone_url
+        repo_name = Path(git_clone_url).stem
+        local_repo_path = self.local_path_obj / repo_name
+        self.git_client = GitClient(
+            repo_url=git_clone_url,
+            repo_path=str(local_repo_path),
+            ssh_key_path=getattr(self.args, 'ssh_key_path', None)
+        )
 
 
     def _process_diff_and_review(self) -> Optional[str]:
