@@ -54,7 +54,7 @@ class BacklogCodeReviewer(GitCodeReviewer):
                 self.backlog_client.add_issue_comment(issue_id, sanitized_result)
                 print("--- ✅ Backlogにコメントを投稿しました ---")
             else:
-                print("レビュー対象の差分がなかったか、結果が空のため処理を終了します。")
+                print("Backlogへのコメント投稿をスキップしました (レビュー結果が空)。")
 
             return review_result
 
