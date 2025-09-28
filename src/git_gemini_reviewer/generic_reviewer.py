@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 from typing import Optional, Any
 
-# 依存関係（これらのファイルがプロジェクト内に存在することを前提とします）
 from core.git_client import GitClient
 from core.gemini_reviewer import GeminiReviewer
 from core.settings import Settings
@@ -30,7 +29,7 @@ class GitCodeReviewer:
         初期化を行い、引数を保持し、必要なクライアントをセットアップします。
         """
         self.args = args
-        # ★ local-path は CLI 側でデフォルト値が設定されていることを前提とし、Path オブジェクトに変換
+        # local-path は CLI 側でデフォルト値が設定されていることを前提とし、Path オブジェクトに変換
         self.local_path_obj = Path(args.local_path)
         self.gemini_reviewer: Optional[GeminiReviewer] = None
         self.git_client: Optional[GitClient] = None
