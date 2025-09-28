@@ -50,13 +50,20 @@ class GitCodeReviewer:
 
     def _setup_gemini_reviewer(self):
         """GeminiReviewerを環境変数から初期化します。"""
+        # settings インスタンスから直接属性として値を取得する
         api_key = Settings.get('GEMINI_API_KEY')
         if not api_key or "YOUR_GEMINI_API_KEY" in api_key:
-            raise ConfigurationError("Gemini APIキーが設定されていません。環境変数またはconfig.pyを確認してください。")
+            raise ConfigurationError("Gemini APIキーが設定されていません。")
+
+        # Settingsクラスからプロンプトのパスを取得
+        prompt_generic_path = Settings.PROMPT_GENERIC_PATH
+        prompt_backlog_path = Settings.PROMPT_BACKLOG_PATH
 
         self.gemini_reviewer = GeminiReviewer(
             api_key=api_key,
-            model_name=self.args.gemini_model_name
+            model_name=self.args.gemini_model_name,
+            prompt_generic_path=prompt_generic_path,
+            prompt_backlog_path=prompt_backlog_path
         )
 
     def _prepare_local_repository(self) -> Path:
