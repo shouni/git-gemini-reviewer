@@ -168,3 +168,9 @@ backlog-reviewer \
   -f "develop" \
   -i "BLG-123"
 ```
+
+---
+
+### 📜 ライセンス (License)
+
+このプロジェクトは [MIT License](https://opensource.org/licenses/MIT) の下で公開されています。
