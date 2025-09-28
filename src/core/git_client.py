@@ -29,7 +29,7 @@ class GitClient:
     Go版と同様に、リポジトリの存在チェック、URL不一致時の自動再クローン機能を提供します。
     """
 
-    def __init__(self, repo_url: str, local_path: str, ssh_key_path: Optional[str] = None):
+    def __init__(self, repo_url: str, repo_path: str, ssh_key_path: Optional[str] = None):
         """
         GitClientを初期化し、リポジトリをクローンまたは開きます。
         このコンストラクタ内で clone_or_open の処理を実行します。
@@ -40,7 +40,7 @@ class GitClient:
             ssh_key_path (Optional[str]): SSH秘密鍵へのパス。
         """
         self.repo_url = repo_url
-        self.repo_path = Path(local_path).resolve()
+        self.repo_path = Path(repo_path).resolve()
         self.ssh_key_path = ssh_key_path
 
         # SSHキーパスを環境変数 GIT_SSH_COMMAND に設定
