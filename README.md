@@ -32,54 +32,89 @@
 
 -----
 
-## 🔑 環境変数の設定
+## 🛠️ 開発環境のセットアップ
 
-本ツールは、APIキーなどの機密情報を環境変数から読み込みます。最も簡単な設定方法は、プロジェクトのルートディレクトリに **`.env`** ファイルを作成することです。
+### **1. Pythonのインストール (Windows / macOS)**
 
-### 📄 `.env` ファイルの例
+本ツールはPython 3.9以上が必要です。以下の手順でインストールしてください。
+
+#### **Windows**
+
+1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/windows/)にアクセスし、「Python 3.x.x」のインストーラーをダウンロードします。
+2.  **インストーラーを実行**: ダウンロードした`.exe`ファイルを実行します。
+3.  **注意点**: **「Add python.exe to PATH」のチェックボックスを必ずオンにしてから**、インストールを続行してください。これにより、コマンドプロンプトやPowerShellから`python`コマンドが使えるようになります。
+
+#### **macOS**
+
+macOSにはPythonがプリインストールされていますが、バージョンが古い場合があります。
+
+1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/macos/)にアクセスし、最新版をダウンロードします。
+2.  **インストーラーを実行**: ダウンロードした`.pkg`ファイルを実行し、指示に従ってインストールします。
+
+### **2. 仮想環境の作成とアクティベート**
+
+Pythonのインストール後、プロジェクトの作業ディレクトリで以下のコマンドを実行します。
+これにより、プロジェクト固有の独立した環境が構築されます。
+
+| OS     | コマンド                               |
+| :---   | :---                                   |
+| **Windows**| `python -m venv .venv`<br>`.\.venv\Scripts\activate`|
+| **macOS** | `python3 -m venv .venv`<br>`source .venv/bin/activate`|
+
+### **3. リポジトリのクローン**
+
+仮想環境をアクティベートした後、本プロジェクトをローカルにクローンします。
 
 ```bash
-# Gemini API キー
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
-
-# --- Backlog 連携に必要な設定 (git-gemini-reviewer-backlog コマンド利用時のみ必須) ---
-# BacklogのスペースID (例: 会社のアカウント名が "example" ならば "example")
-BACKLOG_SPACE_ID="YOUR_BACKLOG_SPACE_ID"
-
-# BacklogのAPIキー (個人設定から発行したもの)
-BACKLOG_API_KEY="YOUR_BACKLOG_API_KEY"
+git clone https://github.com/shouni/git-gemini-reviewer.git
+cd git-gemini-reviewer
 ```
 
-### 環境変数一覧
+### **4. pip の更新 (推奨)**
 
-| 変数名 | 使用コマンド | 説明 |
-| :--- | :--- | :--- |
-| **`GEMINI_API_KEY`** | 全てのコマンド | Gemini APIへアクセスするためのキー。**必須**。 |
-| **`BACKLOG_SPACE_ID`** | `-backlog` | BacklogスペースのID。URLのサブドメイン部分に該当します。**Backlog連携時に必須**。 |
-| **`BACKLOG_API_KEY`** | `-backlog` | Backlogへコメント投稿するためのAPIキー。**Backlog連携時に必須**。 |
+```bash
+pip install --upgrade pip
+```
+
+### **5. 編集可能モードでのインストール**
+
+```bash
+pip install --upgrade --force-reinstall -e .
+```
+
+このコマンドは、あなたがプロジェクトのソースコードを編集するたびに、変更がすぐに反映されるようにします。
 
 -----
 
-## 🛠️ 開発環境のセットアップ
+## 🔑 環境変数の設定
 
-1.  **仮想環境の作成とアクティベート**
+本ツールは、APIキーなどの機密情報を環境変数または `config.py` ファイルから読み込みます。**推奨される設定方法**は、プロジェクトのルートディレクトリに **`config.py`** を作成することです。
 
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
+### 📄 `config.py` ファイルの例
 
-2.  **pip の更新 (推奨)**
+プロジェクトのルートディレクトリに以下の内容で `config.py` を作成してください。
 
-    ```bash
-    pip install --upgrade pip
-    ```
+```python
+# Gemini API キー
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"
 
-3.  **編集可能モードでのインストール**
+# --- Backlog 連携に必要な設定 (backlog-reviewer コマンド利用時のみ必須) ---
+# Backlogのドメイン (例: 会社のアカウントが "example" なら "example.backlog.jp")
+BACKLOG_DOMAIN = "YOUR_BACKLOG_DOMAIN"
 
-    ```bash
-    pip install --upgrade --force-reinstall -e .
-    ```
+# BacklogのAPIキー (個人設定から発行したもの)
+BACKLOG_API_KEY = "YOUR_BACKLOG_API_KEY"
+
+# BacklogのプロジェクトID (例: プロジェクトキーが "PROJECT" なら "PROJECT")
+PROJECT_ID = "YOUR_PROJECT_ID"
+```
+
+**注意**: `config.py` には機密情報が含まれるため、Git管理から除外するために `.gitignore` ファイルに追記することを強く推奨します。
+
+```
+# .gitignore
+config.py
+```
 
 -----
 
@@ -92,7 +127,7 @@ BACKLOG_API_KEY="YOUR_BACKLOG_API_KEY"
 | コマンド名 | 目的 | Backlog連携 |
 | :--- | :--- | :--- |
 | **`reviewer`** | レビュー結果を**標準出力**（ターミナル）に表示します。 | **なし** |
-| **`reviewer-backlog`** | レビュー結果を**Backlogの課題にコメントとして投稿**します。 | **あり** |
+| **`backlog-reviewer`** | レビュー結果を**Backlogの課題にコメントとして投稿**します。 | **あり** |
 
 ### 引数一覧
 
@@ -103,8 +138,8 @@ BACKLOG_API_KEY="YOUR_BACKLOG_API_KEY"
 | `--feature-branch` (`-f`) | 任意 | `develop`          | **レビュー対象**のフィーチャーブランチ。 |
 | `--local-path` (`-p`) | 任意 | `./var/tmp`        | リポジトリを一時的にクローンするローカルパス。 |
 | `--gemini-model-name` (`-g`) | 任意 | `gemini-2.0-flash` | 使用する Gemini モデル名。 |
-| `--issue-id` (`-i`) | ※ | -                  | Backlogの課題ID。`reviewer-backlog` で投稿時に必須。 |
-| `--no-post` | 任意 | -                  | `reviewer-backlog` でコメント投稿をスキップするフラグ。 |
+| `--issue-id` (`-i`) | ※ | -                  | Backlogの課題ID。`backlog-reviewer` で投稿時に必須。 |
+| `--no-post` | 任意 | -                  | `backlog-reviewer` でコメント投稿をスキップするフラグ。 |
 
 -----
 
@@ -126,8 +161,8 @@ reviewer \
 #### B. Backlog連携あり (課題にコメント投稿)
 
 ```bash
-# コマンド名: reviewer-backlog
-reviewer-backlog \
+# コマンド名: backlog-reviewer
+backlog-reviewer \
   -u "git@github.com:shouni/git-gemini-reviewer.git" \
   -b "main" \
   -f "develop" \
