@@ -34,11 +34,38 @@
 
 -----
 
-## 🔑 環境変数の設定
+## 🛠️ 開発環境のセットアップ
 
-本ツールは、APIキーなどの機密情報を環境変数から読み込みます。最も簡単な設定方法は、プロジェクトのルートディレクトリに **`.env`** ファイルを作成することです。
+### **1. Pythonのインストール (Windows / macOS)**
 
-### 📄 `.env` ファイルの例
+本ツールはPython 3.9以上が必要です。以下の手順でインストールしてください。
+
+#### **Windows**
+
+1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/windows/)にアクセスし、「Python 3.x.x」のインストーラーをダウンロードします。
+2.  **インストーラーを実行**: ダウンロードした`.exe`ファイルを実行します。
+3.  **注意点**: **「Add python.exe to PATH」のチェックボックスを必ずオンにしてから**、インストールを続行してください。これにより、コマンドプロンプトやPowerShellから`python`コマンドが使えるようになります。
+
+#### **macOS**
+
+macOSにはPythonがプリインストールされていますが、バージョンが古い場合があります。
+
+1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/macos/)にアクセスし、最新版をダウンロードします。
+2.  **インストーラーを実行**: ダウンロードした`.pkg`ファイルを実行し、指示に従ってインストールします。
+
+### **2. 仮想環境の作成とアクティベート**
+
+Pythonのインストール後、プロジェクトの作業ディレクトリで以下のコマンドを実行します。
+これにより、プロジェクト固有の独立した環境が構築されます。
+
+| OS     | コマンド                               |
+| :---   | :---                                   |
+| **Windows**| `python -m venv .venv`<br>`.\.venv\Scripts\activate`|
+| **macOS** | `python3 -m venv .venv`<br>`source .venv/bin/activate`|
+
+### **3. リポジトリのクローン**
+
+仮想環境をアクティベートした後、本プロジェクトをローカルにクローンします。
 
 ```bash
 # Gemini API キー (必須)
@@ -55,7 +82,7 @@ BACKLOG_DOMAIN="your-space.backlog.jp"
 PROJECT_ID="PROJECT_ID" 
 ```
 
-### 環境変数一覧
+### **5. 編集可能モードでのインストール**
 
 | 変数名 | 使用コマンド | 説明 |
 | :--- | :--- | :--- |
@@ -66,14 +93,21 @@ PROJECT_ID="PROJECT_ID"
 
 -----
 
-## 🛠️ 開発環境のセットアップ
+## 🔑 環境変数の設定
 
-1.  **仮想環境の作成とアクティベート**
+本ツールは、APIキーなどの機密情報を環境変数または `config.py` ファイルから読み込みます。**推奨される設定方法**は、プロジェクトのルートディレクトリに **`config.py`** を作成することです。
 
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
+### 📄 `config.py` ファイルの例
+
+プロジェクトのルートディレクトリに以下の内容で `config.py` を作成してください。
+
+```python
+# Gemini API キー
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"
+
+# --- Backlog 連携に必要な設定 (backlog-reviewer コマンド利用時のみ必須) ---
+# Backlogのドメイン (例: 会社のアカウントが "example" なら "example.backlog.jp")
+BACKLOG_DOMAIN = "YOUR_PROJECT_ID"
 
 2.  **編集可能モードでのインストール**
 
@@ -105,6 +139,7 @@ PROJECT_ID="PROJECT_ID"
 Git Diff:
 %s
 ---
+
 ```
 
 -----
@@ -125,7 +160,7 @@ Git Diff:
 | コマンド名 | 目的 | Backlog連携 |
 | :--- | :--- | :--- |
 | **`reviewer`** | レビュー結果を**標準出力**（ターミナル）に表示します。 | **なし** |
-| **`reviewer-backlog`** | レビュー結果を**Backlogの課題にコメントとして投稿**します。 | **あり** |
+| **`backlog-reviewer`** | レビュー結果を**Backlogの課題にコメントとして投稿**します。 | **あり** |
 
 ### 引数一覧
 
@@ -159,15 +194,12 @@ reviewer \
 **GitリポジトリがSSH認証を必要とする場合、`-s`（`--ssh-key-path`）は必須です。**
 
 ```bash
-reviewer-backlog \
-  -u "git@example.backlog.jp:PROJECT/repo-name.git" \
   -b "main" \
   -f "bugfix/issue-456" \
   -i "PROJECT-123" \
   -s "~/.ssh/id_rsa" 
 ```
 
------
 
 ### 📜 ライセンス (License)
 
