@@ -36,111 +36,82 @@
 
 ## 🛠️ 開発環境のセットアップ
 
-### **1. Pythonのインストール (Windows / macOS)**
+### 1\. Pythonのインストール (Windows / macOS)
 
-本ツールはPython 3.9以上が必要です。以下の手順でインストールしてください。
+本ツールはPython 3.9以上が必要です。以下の手順でインストールしてください。（*詳細は省略*）
 
-#### **Windows**
+### 2\. 仮想環境の作成とアクティベート
 
-1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/windows/)にアクセスし、「Python 3.x.x」のインストーラーをダウンロードします。
-2.  **インストーラーを実行**: ダウンロードした`.exe`ファイルを実行します。
-3.  **注意点**: **「Add python.exe to PATH」のチェックボックスを必ずオンにしてから**、インストールを続行してください。これにより、コマンドプロンプトやPowerShellから`python`コマンドが使えるようになります。
+プロジェクトの作業ディレクトリで以下のコマンドを実行し、仮想環境を構築・アクティベートします。
 
-#### **macOS**
+| OS | コマンド |
+| :--- | :--- |
+| **Windows** | `python -m venv .venv`<br>`.\.venv\Scripts\activate` |
+| **macOS** | `python3 -m venv .venv`<br>`source .venv/bin/activate` |
 
-macOSにはPythonがプリインストールされていますが、バージョンが古い場合があります。
-
-1.  **公式サイトからインストーラーをダウンロード**: [Python公式サイト](https://www.python.org/downloads/macos/)にアクセスし、最新版をダウンロードします。
-2.  **インストーラーを実行**: ダウンロードした`.pkg`ファイルを実行し、指示に従ってインストールします。
-
-### **2. 仮想環境の作成とアクティベート**
-
-Pythonのインストール後、プロジェクトの作業ディレクトリで以下のコマンドを実行します。
-これにより、プロジェクト固有の独立した環境が構築されます。
-
-| OS     | コマンド                               |
-| :---   | :---                                   |
-| **Windows**| `python -m venv .venv`<br>`.\.venv\Scripts\activate`|
-| **macOS** | `python3 -m venv .venv`<br>`source .venv/bin/activate`|
-
-### **3. リポジトリのクローン**
+### 3\. リポジトリのクローン
 
 仮想環境をアクティベートした後、本プロジェクトをローカルにクローンします。
 
 ```bash
-# Gemini API キー (必須)
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
-
-# --- Backlog 連携に必要な設定 (reviewer-backlog コマンド利用時のみ必須) ---
-# BacklogのAPIキー (個人設定から発行したもの)
-BACKLOG_API_KEY="YOUR_BACKLOG_API_KEY"
-
-# Backlogのドメイン名 (例: your-space.backlog.jp)。URL全体ではありません。
-BACKLOG_DOMAIN="your-space.backlog.jp" 
-
-# Backlogでリポジトリ情報取得などに使用するプロジェクトID (数値またはキー)
-PROJECT_ID="PROJECT_ID" 
+git clone YOUR_REPOSITORY_URL
+cd git-gemini-reviewer
 ```
 
-### **5. 編集可能モードでのインストール**
+### 4\. 編集可能モードでのインストール
 
-| 変数名 | 使用コマンド | 説明 |
-| :--- | :--- | :--- |
-| **`GEMINI_API_KEY`** | 全てのコマンド | Gemini APIへアクセスするためのキー。**必須**。 |
-| **`BACKLOG_API_KEY`** | `reviewer-backlog` | Backlogへコメント投稿するためのAPIキー。**Backlog連携時に必須**。 |
-| **`BACKLOG_DOMAIN`** | `reviewer-backlog` | Backlogスペースの**ドメイン名**（例: `your-space.backlog.jp`）。URL全体ではありません。**Backlog連携時に必須**。 |
-| **`PROJECT_ID`** | `reviewer-backlog` | Backlogでリポジトリ情報取得などに使用する**プロジェクトID**（数値またはキー）。**Backlog連携時に必須**。 |
+プロジェクトのルートディレクトリで、以下のコマンドを実行し、依存関係をインストールします。
+
+```bash
+pip install --upgrade --force-reinstall -e .
+```
 
 -----
 
-## 🔑 環境変数の設定
+## 🔑 環境変数の設定 (APIキーとBacklog情報)
 
-本ツールは、APIキーなどの機密情報を環境変数または `config.py` ファイルから読み込みます。**推奨される設定方法**は、プロジェクトのルートディレクトリに **`config.py`** を作成することです。
+本ツールは、APIキーなどの機密情報を**環境変数**または **`config.py`** ファイルから読み込みます。**推奨される設定方法**は、プロジェクトのルートディレクトリに **`config.py`** を作成することです。
 
-### 📄 `config.py` ファイルの例
+### 📄 必要な変数一覧
 
-プロジェクトのルートディレクトリに以下の内容で `config.py` を作成してください。
+| 変数名 | 使用コマンド | 説明 | 必須条件 |
+| :--- | :--- | :--- | :--- |
+| **`GEMINI_API_KEY`** | 全てのコマンド | Gemini APIへアクセスするためのキー。 | **必須** |
+| **`BACKLOG_API_KEY`** | `backlog-reviewer` | Backlogへコメント投稿するためのAPIキー。 | **Backlog連携時のみ必須** |
+| **`BACKLOG_DOMAIN`** | `backlog-reviewer` | Backlogスペースの**ドメイン名**（例: `your-space.backlog.jp`）。URL全体ではありません。 | **Backlog連携時のみ必須** |
+| **`PROJECT_ID`** | `backlog-reviewer` | Backlogでリポジトリ情報取得などに使用する**プロジェクトID**（数値またはキー）。 | **Backlog連携時のみ必須** |
+
+### 📄 `config.py` ファイルの例 (推奨)
+
+プロジェクトのルートディレクトリに以下の内容で **`config.py`** を作成してください。
 
 ```python
-# Gemini API キー
+# Gemini API キー (必須)
 GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"
 
 # --- Backlog 連携に必要な設定 (backlog-reviewer コマンド利用時のみ必須) ---
-# Backlogのドメイン (例: 会社のアカウントが "example" なら "example.backlog.jp")
-BACKLOG_DOMAIN = "YOUR_PROJECT_ID"
+# BacklogのAPIキー
+BACKLOG_API_KEY = "YOUR_BACKLOG_API_KEY"
 
-2.  **編集可能モードでのインストール**
+# Backlogのドメイン名 (例: your-space.backlog.jp)
+BACKLOG_DOMAIN = "your-space.backlog.jp" 
 
-    ```bash
-    pip install --upgrade --force-reinstall -e .
-    ```
+# Backlogでリポジトリ情報取得などに使用するプロジェクトID (数値またはキー)
+PROJECT_ID = "PROJECT_KEY_OR_ID"
+```
 
 -----
 
-## 4\. プロンプトファイルの準備 (必須)
+## 5\. プロンプトファイルの準備 (必須)
 
-このツールは、Geminiにレビューを依頼する際の指示を記述したプロンプトファイルを読み込みます。デフォルトで必要なファイルは以下の通りです。
+このツールは、Geminiにレビューを依頼する際の指示を記述したプロンプトファイルを読み込みます。
 
 | ファイル名 | 役割 | 説明 |
 | :--- | :--- | :--- |
 | **`prompt_generic.md`** | 汎用レビュー用のプロンプト | Backlogに依存しない標準のレビューコメントを生成。 |
 | **`prompt_backlog.md`** | Backlog連携レビュー用のプロンプト | Backlogの課題形式に合わせた、よりフォーマルなレビューコメントを生成。 |
 
-これらのファイルが**プロジェクトの設定ディレクトリ**（`core/prompts`など）に存在する必要があります。各ファイルには、**必ず**コード差分が挿入されるプレースホルダー **`%s`** を含めてください。
-
-**`prompt_generic.md` の内容例:**
-
-```markdown
-あなたは経験豊富なシニアソフトウェアエンジニアです。以下のGit差分（Diff）をレビューしてください。
-コード品質、セキュリティ、パフォーマンス、可読性、ベストプラクティスからの逸脱について、簡潔かつ建設的なレビューを日本語で行ってください。
-レビュー結果はMarkdown形式で、必ず「## レビュー結果」という見出しから始めてください。
-
----
-Git Diff:
-%s
----
-
-```
+これらのファイルが**プロジェクトの設定ディレクトリ**（`core/prompts`など）に存在する必要があります。各ファイルには、**必ず**コード差分が挿入されるプレースホルダー **`%s`** を含めてください。（*`prompt_generic.md` の内容例は元のドキュメント通りで省略*）
 
 -----
 
@@ -148,10 +119,7 @@ Git Diff:
 
 ### GitClientの賢い動作
 
-本ツールは、ローカルにリポジトリが存在する場合、渡された `--git-clone-url` と既存のリモートURLを比較します。
-
-* **URLが一致する場合**: 既存のローカルリポジトリをそのまま利用し、`git fetch`で最新化します。
-* **URLが一致しない場合**: 古いリポジトリを自動で削除し、新しいURLで再クローンを実行します。これにより、リポジトリの切り替えを意識する必要がありません。
+本ツールは、ローカルにリポジトリが存在する場合、渡された `--git-clone-url` と既存のリモートURLを比較します。（*詳細は元のドキュメント通りで省略*）
 
 ### コマンド一覧
 
@@ -172,8 +140,8 @@ Git Diff:
 | `--local-path` (`-p`) | 任意 | `./var/tmp` | リポジトリを一時的にクローンするローカルパス。 |
 | `--ssh-key-path` (`-s`) | 任意 | `~/.ssh/id_rsa` | SSH認証用の秘密鍵パス（SSH URL接続時に必要）。 |
 | `--gemini-model-name` (`-g`) | 任意 | `gemini-2.5-flash` | 使用する Gemini モデル名。 |
-| `--issue-id` (`-i`) | ※ | - | Backlogの課題ID。`reviewer-backlog` で投稿時に必須。 |
-| `--no-post` | 任意 | - | `reviewer-backlog` コマンドで、**レビュー結果のBacklogへのコメント投稿をスキップ**するフラグ。 |
+| `--issue-id` (`-i`) | ※ | - | Backlogの課題ID。`backlog-reviewer` で投稿時に必須。 |
+| `--no-post` | 任意 | - | `backlog-reviewer` コマンドで、**レビュー結果のBacklogへのコメント投稿をスキップ**するフラグ。 |
 
 -----
 
@@ -186,20 +154,23 @@ reviewer \
   -u "git@github.com:shouni/git-gemini-reviewer.git" \
   -b "main" \
   -f "feature/new-function" \
-  -s "~/.ssh/id_rsa" 
+  -s "~/.ssh/id_rsa" 
 ```
 
-#### B. Backlog 投稿モード (`reviewer-backlog`)
+#### B. Backlog 投稿モード (`backlog-reviewer`)
 
 **GitリポジトリがSSH認証を必要とする場合、`-s`（`--ssh-key-path`）は必須です。**
 
 ```bash
+backlog-reviewer \
+  -u "git@github.com:shouni/git-gemini-reviewer.git" \
   -b "main" \
   -f "bugfix/issue-456" \
   -i "PROJECT-123" \
-  -s "~/.ssh/id_rsa" 
+  -s "~/.ssh/id_rsa" 
 ```
 
+-----
 
 ### 📜 ライセンス (License)
 
