@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import Optional, Any
+from pathlib import Path
 import importlib.util
 
 class Settings:
@@ -9,6 +10,10 @@ class Settings:
     シングルトンパターンを適用し、設定の初期化を一度だけ行います。
     """
     _config: Optional[Any] = None
+
+    PROMPT_DIR: Path = Path.cwd() / "prompts"  # promptsディレクトリのパスを基準にする
+    PROMPT_GENERIC_PATH: Path = PROMPT_DIR / "generic.md"
+    PROMPT_BACKLOG_PATH: Path = PROMPT_DIR / "backlog.md"
 
     @classmethod
     def _initialize_config(cls):

@@ -48,13 +48,15 @@ class BacklogCodeReviewer(GitCodeReviewer):
             review_result = super().execute_review()
 
             # 3. 結果のBacklogへの投稿 (Backlog固有)
-            if review_result:
+            if review_result and review_result.strip():
                 print("Backlogにレビュー結果をコメント投稿中...")
                 sanitized_result = sanitize_string(review_result)
                 self.backlog_client.add_issue_comment(issue_id, sanitized_result)
                 print("--- ✅ Backlogにコメントを投稿しました ---")
             else:
-                print("--- 処理を終了します（コメント投稿なし） ---")
+                print("レビュー対象の差分がなかったか、結果が空のため処理を終了します。")
+
+            return review_result
 
         except Exception as e:
             print(f"エラーが発生しました: {e}", file=sys.stderr)
