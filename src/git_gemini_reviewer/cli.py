@@ -11,7 +11,7 @@ from .generic_reviewer import GitCodeReviewer
 # --- 定数定義 ---
 DEFAULT_LOCAL_PATH = os.path.join(os.getcwd(), 'var', 'tmp')
 DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
-
+Reviewer = Union[BacklogCodeReviewer, GitCodeReviewer]
 # --- 処理のコアロジック ---
 
 def run_reviewer(args: argparse.Namespace, is_backlog_mode: bool):
@@ -26,7 +26,7 @@ def run_reviewer(args: argparse.Namespace, is_backlog_mode: bool):
 
         # Backlogモード完了時のメッセージを追加
         if is_backlog_mode:
-            print("\n✅ Backlogモードの処理が完了しました。")
+            print("✅ Backlogモードの処理が完了しました。")
 
     except ValueError as ve:
         # 引数バリデーションなど、予測可能なエラー
