@@ -131,7 +131,12 @@ class CodeReviewer:
             )
 
             # 3. Gitクライアントの初期化
-            self.git_client = GitClient(repo_path=str(local_repo_path))
+            git_clone_url = self.args.git_clone_url
+            self.git_client = GitClient(
+                repo_url=git_clone_url,
+                repo_path=str(local_repo_path),
+                ssh_key_path=getattr(self.args, 'ssh_key_path', None)
+            )
 
             # 4. 差分の取得とレビューの実行
             review_result = self._process_diff_and_review(
