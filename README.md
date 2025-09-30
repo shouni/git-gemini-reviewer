@@ -138,7 +138,6 @@ PROJECT_ID = "PROJECT_KEY_OR_ID"
 | `--base-branch` (`-b`) | 任意 | `main` | 差分比較の**基準となるブランチ**。 |
 | `--feature-branch` (`-f`) | 任意 | `develop` | **レビュー対象**のフィーチャーブランチ。 |
 | `--local-path` (`-p`) | 任意 | `./var/tmp` | リポジトリを一時的にクローンするローカルパス。 |
-| `--ssh-key-path` (`-s`) | 任意 | `~/.ssh/id_rsa` | SSH認証用の秘密鍵パス（SSH URL接続時に必要）。 |
 | `--gemini-model-name` (`-g`) | 任意 | `gemini-2.5-flash` | 使用する Gemini モデル名。 |
 | `--issue-id` (`-i`) | ※ | - | Backlogの課題ID。`backlog-reviewer` で投稿時に必須。 |
 | `--no-post` | 任意 | - | `backlog-reviewer` コマンドで、**レビュー結果のBacklogへのコメント投稿をスキップ**するフラグ。 |
@@ -153,8 +152,7 @@ PROJECT_ID = "PROJECT_KEY_OR_ID"
 reviewer \
   -u "git@github.com:shouni/git-gemini-reviewer.git" \
   -b "main" \
-  -f "feature/new-function" \
-  -s "~/.ssh/id_rsa" 
+  -f "feature/new-function"
 ```
 
 #### B. Backlog 投稿モード (`backlog-reviewer`)
@@ -166,8 +164,7 @@ backlog-reviewer \
   -u "git@github.com:shouni/git-gemini-reviewer.git" \
   -b "main" \
   -f "bugfix/issue-456" \
-  -i "PROJECT-123" \
-  -s "~/.ssh/id_rsa" 
+  -i "PROJECT-123"
 ```
 
 -----
